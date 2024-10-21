@@ -26,78 +26,87 @@ export default function App() {
     "=",
   ];
 
-  const [currentNumber, setCurrentNumber] = useState("");
-  const [lastNumber, setLastNumber] = useState("");
+  const [currentNumber, setCurrentNumber] = useState("")
+  const [lastNumber, setLastNumber] = useState("")
+
+const handleInput = (buttonPressed) => {
+  if (
+    buttonPressed === "*" ||
+    buttonPressed === "/" ||
+    buttonPressed === "+" ||
+    buttonPressed === "-"
+  ) {
+    setCurrentNumber(currentNumber + " " + buttonPressed + " ");
+    return;
+  }
+  if (buttonPressed === "DEL") {
+    setCurrentNumber(currentNumber.substring(0, currentNumber.length - 1));
+    return;
+  }
+  if (buttonPressed === ",") {
+    setCurrentNumber(currentNumber + buttonPressed);
+    return;
+  }
+  if (buttonPressed === "+/-") {
+    return;
+  }
+  if (buttonPressed === "C") {
+    setLastNumber("");
+    setCurrentNumber("");
+    return;
+  }
+  if (buttonPressed === "=") {
+    setLastNumber(currentNumber + " = ");
+    calculator();
+    return;
+  }
+  setCurrentNumber(currentNumber + buttonPressed);
+};
+
+const calculator = () => {
+  const splitNumbers = currentNumber.split(" ");
+  const operator = splitNumbers[1];
+
+  if (operator === "*") {
+    setCurrentNumber(
+      (parseFloat(splitNumbers[0]) * parseFloat(splitNumbers[2])).toString()
+    );
+  }
+  if (operator === "/") {
+    setCurrentNumber(
+      (parseFloat(splitNumbers[0]) / parseFloat(splitNumbers[2])).toString()
+    );
+  }
+  if (operator === "+") {
+    setCurrentNumber(
+      (parseFloat(splitNumbers[0]) + parseFloat(splitNumbers[2])).toString()
+    );
+  }
+  if (operator === "-") {
+    setCurrentNumber(
+      (parseFloat(splitNumbers[0]) - parseFloat(splitNumbers[2])).toString()
+    );
+  }
+};
+
 
   return (
     <View>
       <View style={styles.result}>
-        <Text styles={styles.historyText}>{lastNumber}</Text>
+        <Text style={styles.historyText}>{lastNumber}</Text>
         <Text style={styles.resultText}>{currentNumber}</Text>
       </View>
       <View style={styles.buttons}>
-        {buttons.map((button) => (
-          <TouchableOpacity key={button} style={styles.button}>
+        {buttons.map((button) => 
+          <TouchableOpacity key={button} style={styles.button} onPress={() => handleInput(button)}>
             <Text style={styles.textButton}>{button}</Text>
           </TouchableOpacity>
-        ))}
+        )}
       </View>
     </View>
   );
 }
 
-function handleInput(buttonPressed) {
-  if (buttonPressed === "*" |
-    buttonPressed === "/" |
-    buttonPressed === "+" |
-    buttonPressed === "-"){
-    setCurrentNumber(currentNumber + " " + buttonPressed + " ");
-    return
-  }
-  if (buttonPressed === "DEL") {
-    console.log(currentNumber)
-    setCurrentNumber(currentNumber.substring(0, (currentNumber.lenght - 1)))
-    return
-  }
-  if (buttonPressed === ",") {
-    setCurrentNumber(currentNumber + buttonPressed);
-    return
-  }
-  if (buttonPressed === "+/-") {
-    return
-  }
-  if (buttonPressed === "C") {
-    setLastNumber("");
-    setCurrentNumber("");
-    return
-  }
-  if (buttonPressed === "=") {
-    setLastNumber(currentNumber + " = ")
-    calculator();
-    return
-  }
-  setCurrentNumber(currentNumber + buttonPressed);
-}
-
-function calculator(){
-
-  const splitNumbers = currentNumber.split(" ")
-  const operator = splitNumbers[1]
-  console.log(splitNumbers)
-
-  if(operator === "*"){
-    setCurrentNumber((parseFloat(splitNumbers[0]) * parseFloat(splitNumbers[2])).toString())
-  }
-  if(operator === "/"){
-    setCurrentNumber((parseFloat(splitNumbers[0]) / parseFloat(splitNumbers[2])).toString())
-  }
-  if(operator === "+"){
-    setCurrentNumber((parseFloat(splitNumbers[0]) + parseFloat(splitNumbers[2])).toString())
-  }
-  if(operator === "-"){
-    setCurrentNumber((parseFloat(splitNumbers[0]) - parseFloat(splitNumbers[2])).toString())
-  }
-}
 
 
 
